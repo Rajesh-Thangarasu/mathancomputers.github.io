@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mathan Computers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #0a1628;
+      --accent: #00b4ff;
+      --accent2: #ff6b35;
+      --white: #ffffff;
+      --card-bg: #0e1e38;
+      --border: rgba(0,180,255,0.15);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Barlow', sans-serif; background: var(--primary); color: var(--white); overflow-x: hidden; }
+    .tamil { font-family: 'Noto Sans Tamil', sans-serif; }
+
+    /* NAV */
+    .lang-bar {
+      position: fixed; top: 0; right: 0; left: 0; z-index: 999;
+      background: rgba(10,22,40,0.95); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 40px;
+    }
+    .logo-text { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent); letter-spacing: 2px; }
+    .logo-text span { color: var(--accent2); }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .lang-toggle { display: flex; gap: 6px; background: rgba(255,255,255,0.06); border-radius: 30px; padding: 4px; }
+    .lang-btn { padding: 6px 16px; border-radius: 24px; border: none; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.25s; background: transparent; color: rgba(255,255,255,0.6); }
+    .lang-btn.active { background: var(--accent); color: #fff; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 40px 60px; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,180,255,0.12) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 40% at 80% 80%, rgba(255,107,53,0.08) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; opacity: 0.04;
+      background-image: linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; max-width: 750px; }
+    .hero-badge {
+      display: inline-block; background: rgba(0,180,255,0.12); border: 1px solid rgba(0,180,255,0.3);
+      color: var(--accent); font-size: 0.8rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      padding: 6px 18px; border-radius: 30px; margin-bottom: 24px;
+    }
+    .hero h1 { font-family: 'Rajdhani', sans-serif; font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 700; line-height: 1.05; letter-spacing: 3px; }
+    .hero h1 span { color: var(--accent); }
+    .hero h1 .brand-2 { color: var(--accent2); }
+    .hero-sub { font-size: 1.1rem; color: rgba(255,255,255,0.65); margin: 18px 0 36px; line-height: 1.7; }
+    .hero-cta { display: inline-flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .btn-primary { background: var(--accent); color: #fff; padding: 14px 34px; border-radius: 6px; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.25s; border: none; cursor: pointer; display: inline-block; }
+    .btn-primary:hover { background: #009ee0; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,180,255,0.3); }
+    .btn-outline { background: transparent; color: var(--white); padding: 14px 34px; border-radius: 6px; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.25s; border: 1px solid rgba(255,255,255,0.25); display: inline-block; }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* SECTIONS */
+    section { padding: 90px 40px; }
+    .section-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .section-title { font-family: 'Rajdhani', sans-serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.2; margin-bottom: 16px; }
+    .section-sub { color: rgba(255,255,255,0.55); font-size: 1rem; line-height: 1.7; max-width: 560px; }
+    .container { max-width: 1140px; margin: 0 auto; }
+
+    /* STATS */
+    .stats-bar { background: var(--card-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 40px; }
+    .stats-grid { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; }
+    .stat-num { font-family: 'Rajdhani', sans-serif; font-size: 2.4rem; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+    /* SERVICES */
+    #services { background: var(--primary); }
+    .services-header { text-align: center; margin-bottom: 56px; }
+    .services-header .section-sub { margin: 0 auto; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+    .service-card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 32px 28px;
+      transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), transparent); opacity: 0; transition: opacity 0.3s; }
+    .service-card:hover { transform: translateY(-6px); border-color: rgba(0,180,255,0.35); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+    .service-card:hover::before { opacity: 1; }
+    .service-icon { font-size: 2.4rem; margin-bottom: 18px; display: block; }
+    .service-card h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 10px; }
+    .service-card p { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+    /* PRODUCTS */
+    #products { background: #0b1a30; }
+    .products-header { margin-bottom: 50px; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .product-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 28px 22px; text-align: center; transition: all 0.3s; }
+    .product-card:hover { border-color: var(--accent2); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+    .product-icon { font-size: 2.8rem; margin-bottom: 14px; display: block; }
+    .product-card h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .product-card p { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
+    .product-tag { display: inline-block; margin-top: 12px; background: rgba(255,107,53,0.15); color: var(--accent2); font-size: 0.72rem; font-weight: 600; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; }
+
+    /* WHY */
+    #why { background: var(--primary); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .why-features { display: flex; flex-direction: column; gap: 24px; }
+    .why-item { display: flex; gap: 18px; align-items: flex-start; }
+    .why-icon { width: 46px; height: 46px; border-radius: 10px; background: rgba(0,180,255,0.1); border: 1px solid rgba(0,180,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .why-item h4 { font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; }
+    .why-item p { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+    .why-visual { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 40px; text-align: center; }
+    .why-visual .big-icon { font-size: 5rem; margin-bottom: 20px; display: block; }
+    .why-visual h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; margin-bottom: 10px; }
+    .why-visual p { color: rgba(255,255,255,0.5); font-size: 0.88rem; line-height: 1.6; }
+
+    /* CONTACT */
+    #contact { background: #0b1a30; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: start; }
+    .contact-info h2 { font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 14px; }
+    .contact-info p { color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 32px; }
+    .contact-details { display: flex; flex-direction: column; gap: 18px; }
+    .contact-item { display: flex; gap: 14px; align-items: flex-start; }
+    .contact-item-icon { width: 42px; height: 42px; border-radius: 8px; background: rgba(0,180,255,0.1); border: 1px solid rgba(0,180,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .contact-item-text strong { display: block; font-size: 0.8rem; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+    .contact-item-text span { font-size: 0.92rem; color: rgba(255,255,255,0.75); }
+    .contact-form { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 40px; }
+    .contact-form h3 { font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 0; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.6); letter-spacing: 0.5px; margin-bottom: 7px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 7px; padding: 11px 14px; color: #fff; font-family: 'Barlow', sans-serif;
+      font-size: 0.9rem; outline: none; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
+    .form-group select option { background: var(--card-bg); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-submit { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 7px; padding: 14px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.25s; }
+    .form-submit:hover { background: #009ee0; transform: translateY(-2px); }
+    .form-success { display: none; text-align: center; padding: 16px; color: #4ade80; font-weight: 600; margin-top: 12px; }
+
+    /* FOOTER */
+    footer { background: #060f1e; border-top: 1px solid var(--border); padding: 40px; text-align: center; }
+    .footer-logo { font-family: 'Rajdhani', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--accent); letter-spacing: 2px; margin-bottom: 10px; }
+    .footer-logo span { color: var(--accent2); }
+    footer p { color: rgba(255,255,255,0.35); font-size: 0.83rem; margin-bottom: 6px; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .lang-bar { padding: 12px 20px; }
+      .nav-links { display: none; }
+      section { padding: 70px 20px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-grid, .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-badge { animation: fadeUp 0.5s ease 0.1s both; }
+    .hero h1    { animation: fadeUp 0.6s ease 0.25s both; }
+    .hero-sub   { animation: fadeUp 0.6s ease 0.4s both; }
+    .hero-cta   { animation: fadeUp 0.6s ease 0.55s both; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="lang-bar">
+  <div class="logo-text">MATHAN <span>COMPUTERS</span></div>
+  <div class="nav-links">
+    <a href="#services" data-en="Services" data-ta="சேவைகள்">Services</a>
+    <a href="#products" data-en="Products" data-ta="பொருட்கள்">Products</a>
+    <a href="#why" data-en="Why Us" data-ta="ஏன் நாங்கள்">Why Us</a>
+    <a href="#contact" data-en="Contact" data-ta="தொடர்பு">Contact</a>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('ta')">தமிழ்</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge" data-en="Trusted Tech Partner Since 2010" data-ta="2010 முதல் நம்பகமான தொழில்நுட்ப பங்காளி">Trusted Tech Partner Since 2010</div>
+    <h1>MATHAN <span>COM</span><span class="brand-2">PUTERS</span></h1>
+    <p class="hero-sub" data-en="Your one-stop destination for computer & laptop repair, printer toner filling, CCTV installation, and quality tech products — all under one roof." data-ta="கணினி & லேப்டாப் பழுதுபார்ப்பு, பிரிண்டர் டோனர் நிரப்புதல், CCTV நிறுவல் மற்றும் தரமான தொழில்நுட்ப பொருட்கள் — அனைத்தும் ஒரே இடத்தில்.">
+      Your one-stop destination for computer & laptop repair, printer toner filling, CCTV installation, and quality tech products — all under one roof.
+    </p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary" data-en="Get Service Now" data-ta="இப்போது சேவை பெறுங்கள்">Get Service Now</a>
+      <a href="#services" class="btn-outline" data-en="Our Services" data-ta="எங்கள் சேவைகள்">Our Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-grid">
+    <div><div class="stat-num">12+</div><div class="stat-label" data-en="Years Experience" data-ta="ஆண்டுகள் அனுபவம்">Years Experience</div></div>
+    <div><div class="stat-num">5000+</div><div class="stat-label" data-en="Happy Customers" data-ta="மகிழ்ச்சியான வாடிக்கையாளர்கள்">Happy Customers</div></div>
+    <div><div class="stat-num">98%</div><div class="stat-label" data-en="Satisfaction Rate" data-ta="திருப்தி விகிதம்">Satisfaction Rate</div></div>
+    <div><div class="stat-num">24hr</div><div class="stat-label" data-en="Fast Turnaround" data-ta="விரைவான சேவை">Fast Turnaround</div></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="services-header">
+      <div class="section-label" data-en="What We Do" data-ta="நாங்கள் செய்வது">What We Do</div>
+      <h2 class="section-title" data-en="Our Services" data-ta="எங்கள் சேவைகள்">Our Services</h2>
+      <p class="section-sub" data-en="Professional tech services delivered with expertise, speed, and reliability." data-ta="நிபுணத்துவம், வேகம் மற்றும் நம்பகத்தன்மையுடன் தொழில்முறை சேவைகள்.">Professional tech services delivered with expertise, speed, and reliability.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-icon">💻</span>
+        <h3 data-en="Computer & Laptop Repair" data-ta="கணினி & லேப்டாப் பழுதுபார்ப்பு">Computer & Laptop Repair</h3>
+        <p data-en="Hardware & software diagnosis, motherboard repair, screen replacement, OS installation, virus removal and full system tune-up." data-ta="வன்பொருள் & மென்பொருள் கண்டறிதல், மதர்போர்டு பழுதுபார்ப்பு, திரை மாற்றம், OS நிறுவல், வைரஸ் அகற்றல்.">Hardware & software diagnosis, motherboard repair, screen replacement, OS installation, virus removal and full system tune-up.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🖨️</span>
+        <h3 data-en="Printer Toner Filling" data-ta="பிரிண்டர் டோனர் நிரப்புதல்">Printer Toner Filling</h3>
+        <p data-en="Ink & toner cartridge refilling for all major brands. Quick turnaround and cost-effective compared to buying new cartridges." data-ta="அனைத்து பிரதான பிராண்டுகளுக்கும் இங்க் & டோனர் கார்ட்ரிட்ஜ் நிரப்புதல். விரைவான சேவை மற்றும் குறைந்த செலவு.">Ink & toner cartridge refilling for all major brands. Quick turnaround and cost-effective compared to buying new cartridges.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">📷</span>
+        <h3 data-en="CCTV Installation" data-ta="CCTV நிறுவல்">CCTV Installation</h3>
+        <p data-en="Professional CCTV camera installation for homes and businesses. Site survey, cabling, DVR/NVR setup and remote viewing configuration." data-ta="வீடுகள் மற்றும் வணிகங்களுக்கு தொழில்முறை CCTV நிறுவல். தள ஆய்வு, கேபிளிங், DVR/NVR அமைப்பு.">Professional CCTV camera installation for homes and businesses. Site survey, cabling, DVR/NVR setup and remote viewing configuration.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🔧</span>
+        <h3 data-en="Annual Maintenance" data-ta="ஆண்டு பராமரிப்பு">Annual Maintenance</h3>
+        <p data-en="AMC contracts for offices and businesses. Regular servicing, preventive maintenance and priority support to keep your systems running." data-ta="அலுவலகங்கள் மற்றும் வணிகங்களுக்கு AMC ஒப்பந்தங்கள். வழக்கமான சேவை மற்றும் முன்னுரிமை ஆதரவு.">AMC contracts for offices and businesses. Regular servicing, preventive maintenance and priority support to keep your systems running.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🌐</span>
+        <h3 data-en="Networking Solutions" data-ta="நெட்வொர்க்கிங் தீர்வுகள்">Networking Solutions</h3>
+        <p data-en="LAN/WAN setup, Wi-Fi configuration, router installation, and network troubleshooting for homes and offices." data-ta="LAN/WAN அமைப்பு, Wi-Fi கட்டமைப்பு, ரூட்டர் நிறுவல் மற்றும் நெட்வொர்க் சரிசெய்தல்.">LAN/WAN setup, Wi-Fi configuration, router installation, and network troubleshooting for homes and offices.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🛡️</span>
+        <h3 data-en="Data Recovery" data-ta="தரவு மீட்பு">Data Recovery</h3>
+        <p data-en="Recover lost data from crashed hard drives, formatted drives, and corrupted storage devices with our specialized tools." data-ta="சிதைந்த ஹார்டு டிரைவ்கள், ஃபார்மட் செய்யப்பட்ட இயக்ககங்களிலிருந்து தரவை மீட்டெடுக்கவும்.">Recover lost data from crashed hard drives, formatted drives, and corrupted storage devices with our specialized tools.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="container">
+    <div class="products-header">
+      <div class="section-label" data-en="Shop With Us" data-ta="எங்களிடம் வாங்குங்கள்">Shop With Us</div>
+      <h2 class="section-title" data-en="Products We Sell" data-ta="நாங்கள் விற்கும் பொருட்கள்">Products We Sell</h2>
+      <p class="section-sub" data-en="Quality branded products at competitive prices. We source only the best for our customers." data-ta="போட்டியிடும் விலையில் தரமான பொருட்கள். வாடிக்கையாளர்களுக்கு சிறந்ததை மட்டுமே வழங்குகிறோம்.">Quality branded products at competitive prices. We source only the best for our customers.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <span class="product-icon">💻</span>
+        <h3 data-en="Laptops" data-ta="லேப்டாப்கள்">Laptops</h3>
+        <p data-en="HP, Dell, Lenovo, Asus & more. Budget to premium range available." data-ta="HP, Dell, Lenovo, Asus மற்றும் பலவற்றின் பட்ஜெட் முதல் பிரீமியம் வரை.">HP, Dell, Lenovo, Asus & more. Budget to premium range available.</p>
+        <span class="product-tag" data-en="In Stock" data-ta="கையிருப்பில்">In Stock</span>
+      </div>
+      <div class="product-card">
+        <span class="product-icon">🖥️</span>
+        <h3 data-en="Desktop PCs" data-ta="டெஸ்க்டாப் கணினிகள்">Desktop PCs</h3>
+        <p data-en="Assembled and branded desktops for home, office and gaming needs." data-ta="வீடு, அலுவலகம் மற்றும் கேமிங் தேவைகளுக்கான கணினிகள்.">Assembled and branded desktops for home, office and gaming needs.</p>
+        <span class="product-tag" data-en="In Stock" data-ta="கையிருப்பில்">In Stock</span>
+      </div>
+      <div class="product-card">
+        <span class="product-icon">🖨️</span>
+        <h3 data-en="Printers" data-ta="பிரிண்டர்கள்">Printers</h3>
+        <p data-en="Inkjet, laser and multifunction printers from Canon, HP, Epson & Brother." data-ta="Canon, HP, Epson & Brother இன் இங்க்ஜெட், லேசர் மற்றும் மல்டிஃபங்ஷன் பிரிண்டர்கள்.">Inkjet, laser and multifunction printers from Canon, HP, Epson & Brother.</p>
+        <span class="product-tag" data-en="In Stock" data-ta="கையிருப்பில்">In Stock</span>
+      </div>
+      <div class="product-card">
+        <span class="product-icon">📷</span>
+        <h3 data-en="CCTV Cameras" data-ta="CCTV கேமராக்கள்">CCTV Cameras</h3>
+        <p data-en="HD & IP cameras, DVR/NVR kits for indoor and outdoor surveillance." data-ta="உள்ளே மற்றும் வெளியே கண்காணிப்புக்கான HD & IP கேமராக்கள்.">HD & IP cameras, DVR/NVR kits for indoor and outdoor surveillance.</p>
+        <span class="product-tag" data-en="In Stock" data-ta="கையிருப்பில்">In Stock</span>
+      </div>
+      <div class="product-card">
+        <span class="product-icon">🖱️</span>
+        <h3 data-en="Accessories" data-ta="துணைப்பொருட்கள்">Accessories</h3>
+        <p data-en="Keyboards, mice, webcams, headsets, cables, UPS, pen drives and more." data-ta="கீபோர்டுகள், மவுஸ், வெப்கேம்கள், ஹெட்செட்கள், கேபிள்கள், UPS மற்றும் பலவற்றை.">Keyboards, mice, webcams, headsets, cables, UPS, pen drives and more.</p>
+        <span class="product-tag" data-en="Wide Range" data-ta="பரந்த வரம்பு">Wide Range</span>
+      </div>
+      <div class="product-card">
+        <span class="product-icon">🔌</span>
+        <h3 data-en="Spare Parts" data-ta="உதிரி பாகங்கள்">Spare Parts</h3>
+        <p data-en="RAM, SSD, HDD, batteries, chargers, screens and all major laptop/PC parts." data-ta="RAM, SSD, HDD, பேட்டரிகள், சார்ஜர்கள், திரைகள் மற்றும் அனைத்து பாகங்களும்.">RAM, SSD, HDD, batteries, chargers, screens and all major laptop/PC parts.</p>
+        <span class="product-tag" data-en="Available" data-ta="கிடைக்கிறது">Available</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="container">
+    <div class="why-grid">
+      <div>
+        <div class="section-label" data-en="Why Choose Us" data-ta="ஏன் எங்களை தேர்வு செய்யலாம்">Why Choose Us</div>
+        <h2 class="section-title" data-en="The Mathan Computers Difference" data-ta="மாதன் கம்ப்யூட்டர்ஸின் சிறப்பு">The Mathan Computers Difference</h2>
+        <p class="section-sub" style="margin-bottom:36px" data-en="We combine technical expertise with honest pricing and genuine care for every customer." data-ta="தொழில்நுட்ப நிபுணத்துவம், நியாயமான விலை மற்றும் ஒவ்வொரு வாடிக்கையாளரின் மீதான அக்கறையை நாங்கள் இணைக்கிறோம்.">We combine technical expertise with honest pricing and genuine care for every customer.</p>
+        <div class="why-features">
+          <div class="why-item">
+            <div class="why-icon">⚡</div>
+            <div>
+              <h4 data-en="Fast & Reliable Service" data-ta="வேகமான & நம்பகமான சேவை">Fast & Reliable Service</h4>
+              <p data-en="Most repairs completed within 24 hours. We respect your time." data-ta="பெரும்பாலான பழுதுபார்ப்புகள் 24 மணி நேரத்திற்குள் முடிக்கப்படும்.">Most repairs completed within 24 hours. We respect your time.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon">🏆</div>
+            <div>
+              <h4 data-en="Certified Technicians" data-ta="சான்றிதழ் பெற்ற தொழில்நுட்ப வல்லுனர்கள்">Certified Technicians</h4>
+              <p data-en="Our team holds industry certifications and 12+ years of hands-on experience." data-ta="எங்கள் குழுவினர் தொழில் சான்றிதழ்களை பெற்றவர்கள் மற்றும் 12+ ஆண்டுகள் அனுபவம் கொண்டவர்கள்.">Our team holds industry certifications and 12+ years of hands-on experience.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon">💰</div>
+            <div>
+              <h4 data-en="Transparent Pricing" data-ta="வெளிப்படையான விலை">Transparent Pricing</h4>
+              <p data-en="No hidden charges. Get a quote before any work begins." data-ta="மறைமுக கட்டணங்கள் இல்லை. எந்த வேலையும் தொடங்குவதற்கு முன் விலை பெறுங்கள்.">No hidden charges. Get a quote before any work begins.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-icon">🛡️</div>
+            <div>
+              <h4 data-en="Warranty on Repairs" data-ta="பழுதுபார்ப்புகளுக்கு உத்தரவாதம்">Warranty on Repairs</h4>
+              <p data-en="All repairs come with a 30-day service warranty for your peace of mind." data-ta="அனைத்து பழுதுபார்ப்புகளுக்கும் 30 நாள் சேவை உத்தரவாதம் வழங்கப்படுகிறது.">All repairs come with a 30-day service warranty for your peace of mind.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="why-visual">
+        <span class="big-icon">🖥️</span>
+        <h3 data-en="Your Trusted Local Tech Partner" data-ta="உங்கள் நம்பகமான உள்ளூர் தொழில்நுட்ப பங்காளி">Your Trusted Local Tech Partner</h3>
+        <p data-en="Serving the community for over 12 years with honest, expert technology support for individuals, homes and businesses of all sizes." data-ta="12 ஆண்டுகளுக்கும் மேலாக நுகர்வோர், வீடுகள் மற்றும் வணிகங்களுக்கு நேர்மையான, நிபுணர் தொழில்நுட்ப ஆதரவுடன் சேவை செய்கிறோம்.">Serving the community for over 12 years with honest, expert technology support for individuals, homes and businesses of all sizes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="section-label" data-en="Get In Touch" data-ta="தொடர்பு கொள்ளுங்கள்">Get In Touch</div>
+        <h2 data-en="Contact Mathan Computers" data-ta="மாதன் கம்ப்யூட்டர்ஸை தொடர்பு கொள்ளுங்கள்">Contact Mathan Computers</h2>
+        <p data-en="Have a question or need a repair? Reach out and our team will get back to you promptly." data-ta="கேள்வி உள்ளதா அல்லது பழுதுபார்ப்பு தேவையா? தொடர்பு கொள்ளுங்கள், எங்கள் குழு விரைவில் பதிலளிக்கும்.">Have a question or need a repair? Reach out and our team will get back to you promptly.</p>
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-item-icon">📍</div>
+            <div class="contact-item-text">
+              <strong data-en="Address" data-ta="முகவரி">Address</strong>
+              <span data-en="22 Chetti Street, Kariyankudi, Nagapattinam, Tamil Nadu – 611001" data-ta="22 செட்டி தெரு, காரியாங்குடி, நாகப்பட்டினம், தமிழ்நாடு – 611001">22 Chetti Street, Kariyankudi, Nagapattinam, Tamil Nadu – 611001</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">🏛️</div>
+            <div class="contact-item-text">
+              <strong data-en="GST Number" data-ta="GST எண்">GST Number</strong>
+              <span>33COHPM4882D1ZW</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📞</div>
+            <div class="contact-item-text">
+              <strong data-en="Phone" data-ta="தொலைபேசி">Phone</strong>
+              <span>+91 98765 43210</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📧</div>
+            <div class="contact-item-text">
+              <strong data-en="Email" data-ta="மின்னஞ்சல்">Email</strong>
+              <span>info@mathancomputers.com</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">🕐</div>
+            <div class="contact-item-text">
+              <strong data-en="Working Hours" data-ta="வேலை நேரம்">Working Hours</strong>
+              <span data-en="Mon – Sat: 9:00 AM – 7:30 PM" data-ta="திங்கள் – சனி: காலை 9:00 – மாலை 7:30">Mon – Sat: 9:00 AM – 7:30 PM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <h3 data-en="Send Us a Message" data-ta="எங்களுக்கு செய்தி அனுப்புங்கள்">Send Us a Message</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label data-en="Your Name" data-ta="உங்கள் பெயர்">Your Name</label>
+            <input type="text" id="f-name" placeholder="Ravi Kumar" />
+          </div>
+          <div class="form-group">
+            <label data-en="Phone Number" data-ta="தொலைபேசி எண்">Phone Number</label>
+            <input type="tel" id="f-phone" placeholder="+91 98765 43210" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-en="Email Address" data-ta="மின்னஞ்சல் முகவரி">Email Address</label>
+          <input type="email" id="f-email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label data-en="Service Required" data-ta="தேவையான சேவை">Service Required</label>
+          <select id="f-service">
+            <option data-en="Select a service..." data-ta="சேவையை தேர்வு செய்யவும்...">Select a service...</option>
+            <option data-en="Computer / Laptop Repair" data-ta="கணினி / லேப்டாப் பழுதுபார்ப்பு">Computer / Laptop Repair</option>
+            <option data-en="Printer Toner Filling" data-ta="பிரிண்டர் டோனர் நிரப்புதல்">Printer Toner Filling</option>
+            <option data-en="CCTV Installation" data-ta="CCTV நிறுவல்">CCTV Installation</option>
+            <option data-en="Product Purchase" data-ta="பொருட்கள் வாங்குதல்">Product Purchase</option>
+            <option data-en="Annual Maintenance Contract" data-ta="ஆண்டு பராமரிப்பு ஒப்பந்தம்">Annual Maintenance Contract</option>
+            <option data-en="Other" data-ta="மற்றவை">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-en="Message" data-ta="செய்தி">Message</label>
+          <textarea id="f-message" placeholder="Describe your issue or query..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm()" data-en="Send Message →" data-ta="செய்தி அனுப்பு →">Send Message →</button>
+        <div class="form-success" id="formSuccess" data-en="✅ Thank you! We will contact you shortly." data-ta="✅ நன்றி! நாங்கள் விரைவில் தொடர்பு கொள்வோம்."></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">MATHAN <span>COMPUTERS</span></div>
+  <p data-en="22 Chetti Street, Kariyankudi, Nagapattinam – 611001 | GST: 33COHPM4882D1ZW" data-ta="22 செட்டி தெரு, காரியாங்குடி, நாகப்பட்டினம் – 611001 | GST: 33COHPM4882D1ZW">22 Chetti Street, Kariyankudi, Nagapattinam – 611001 | GST: 33COHPM4882D1ZW</p>
+  <p data-en="© 2025 Mathan Computers. All rights reserved." data-ta="© 2025 மாதன் கம்ப்யூட்டர்ஸ். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.">© 2025 Mathan Computers. All rights reserved.</p>
+</footer>
+
+<script>
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.lang-btn[onclick="setLang(\'' + lang + '\')"]').classList.add('active');
+    document.body.classList.toggle('tamil', lang === 'ta');
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const text = el.getAttribute('data-' + lang);
+      if (text) el.textContent = text;
+    });
+    if (lang === 'ta') {
+      document.getElementById('f-message').placeholder = 'உங்கள் பிரச்சினை அல்லது கேள்வியை விவரிக்கவும்...';
+    } else {
+      document.getElementById('f-message').placeholder = 'Describe your issue or query...';
+    }
+  }
+
+  function submitForm() {
+    const name = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    if (!name || !phone) {
+      alert(currentLang === 'ta' ? 'பெயர் மற்றும் தொலைபேசி எண் தேவை.' : 'Please enter your name and phone number.');
+      return;
+    }
+    const successEl = document.getElementById('formSuccess');
+    successEl.textContent = successEl.getAttribute('data-' + currentLang);
+    successEl.style.display = 'block';
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-phone').value = '';
+    document.getElementById('f-email').value = '';
+    document.getElementById('f-message').value = '';
+    document.getElementById('f-service').selectedIndex = 0;
+    setTimeout(() => { successEl.style.display = 'none'; }, 5000);
+  }
+</script>
+</body>
+</html>
